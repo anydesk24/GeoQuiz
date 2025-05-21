@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>GeoQuiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Chau+Philomene+One&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f9f9f9;
+      --card: #ffffff;
+      --text: #222;
+      --accent: #6c63ff;
+      --correct: #d4edda;
+      --wrong: #f8d7da;
+      --border-radius: 12px;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Chau Philomene One', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: all 0.3s ease;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .header img {
+      height: 90px; /* AUMENTADO aqui */
+      margin-right: 20px;
+    }
+
+    .header h1 {
+      font-size: 2em;
+      margin: 0;
+    }
+
+    .question-card {
+      background: var(--card);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      border: 2px solid #ccc;
+      border-radius: var(--border-radius);
+      background: none;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .options button:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .correct { background-color: var(--correct) !important; }
+    .wrong { background-color: var(--wrong) !important; }
+
+    .score {
+      text-align: center;
+      font-size: 1.5em;
+      margin: 20px 0;
+    }
+
+    .restart-btn {
+      display: block;
+      margin: 0 auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="logo.png" alt="GeoQuiz Logo">
+      <h1>GeoQuiz</h1>
+    </div>
+    <div id="quiz-container"></div>
+    <div class="score" id="score"></div>
+    <button class="restart-btn" onclick="startQuiz()">Reiniciar Quiz</button>
+  </div>
+
+  <script>
+    const questions = [
+      { text: "O que causa as monções na Ásia?", options: ["Placas tectônicas", "Diferença de temperatura", "Rotação da Terra"], answer: 1 },
+      { text: "Qual região é mais afetada pelas monções?", options: ["Oriente Médio", "Ásia Central", "Sul e Sudeste Asiático"], answer: 2 },
+      { text: "Qual golfo fica entre a Índia e o Sudeste Asiático?", options: ["Bengala", "Pérsico", "Omã"], answer: 0 },
+      { text: "O Golfo Pérsico banha quais países?", options: ["China e Japão", "Irã e Arábia Saudita", "Índia e Bangladesh"], answer: 1 },
+      { text: "Qual dessas penínsulas fica na Ásia?", options: ["Ibérica", "Arábica", "Escandinava"], answer: 1 },
+      { text: "A Península da Indochina inclui quais países?", options: ["China e Mongólia", "Vietnã e Laos", "Irã e Arábia Saudita"], answer: 1 },
+      { text: "Qual estreito liga a Ásia à Europa?", options: ["Bering", "Gibraltar", "Bósforo"], answer: 2 },
+      { text: "O Estreito de Malaca liga quais mares?", options: ["Mar da China e Índico", "Cáspio e Pérsico", "Mediterrâneo e Vermelho"], answer: 0 },
+      { text: "Por que o Mar da China Meridional é disputado?", options: ["Geleiras", "Recursos naturais", "Água potável"], answer: 1 },
+      { text: "Qual mar banha o Japão?", options: ["Aral", "Java", "Japão"], answer: 2 }
+    ];
+
+    let score = 0;
+    let current = 0;
+    let shuffled = [];
+
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function renderQuestion() {
+      const container = document.getElementById('quiz-container');
+      container.innerHTML = '';
+      const q = shuffled[current];
+
+      const card = document.createElement('div');
+      card.className = 'question-card';
+
+      const title = document.createElement('h2');
+      title.textContent = q.text;
+      card.appendChild(title);
+
+      const optionsDiv = document.createElement('div');
+      optionsDiv.className = 'options';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.textContent = opt;
+        btn.onclick = () => handleAnswer(btn, idx === q.answer, optionsDiv, idx, q.answer);
+        optionsDiv.appendChild(btn);
+      });
+
+      card.appendChild(optionsDiv);
+      container.appendChild(card);
+    }
+
+    function handleAnswer(btn, correct, container, selected, answer) {
+      Array.from(container.children).forEach((b, i) => {
+        b.disabled = true;
+        if (i === answer) b.classList.add('correct');
+        else if (i === selected) b.classList.add('wrong');
+      });
+
+      if (correct) score++;
+      current++;
+      setTimeout(() => {
+        if (current < shuffled.length) renderQuestion();
+        else showResult();
+      }, 1000);
+    }
+
+    function showResult() {
+      const scoreDiv = document.getElementById('score');
+      scoreDiv.innerHTML = `🎉 Você acertou <strong>${score}</strong> de <strong>${shuffled.length}</strong> perguntas!`;
+    }
+
+    function startQuiz() {
+      score = 0;
+      current = 0;
+      shuffled = shuffle([...questions]);
+      document.getElementById('score').innerHTML = '';
+      renderQuestion();
+    }
+
+    startQuiz();
+  </script>
+</body>
+</html>
