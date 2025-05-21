@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -37,7 +38,7 @@
     }
 
     .header img {
-      height: 90px; /* AUMENTADO aqui */
+      height: 90px;
       margin-right: 20px;
     }
 
@@ -92,6 +93,25 @@
       border-radius: var(--border-radius);
       cursor: pointer;
     }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 10px;
+      }
+      .question-card h2 {
+        font-size: 1.2em;
+      }
+      .options button {
+        font-size: 14px;
+        padding: 10px;
+      }
+      .header img {
+        height: 60px;
+      }
+      .header h1 {
+        font-size: 1.5em;
+      }
+    }
   </style>
 </head>
 <body>
@@ -116,7 +136,17 @@
       { text: "Qual estreito liga a Ásia à Europa?", options: ["Bering", "Gibraltar", "Bósforo"], answer: 2 },
       { text: "O Estreito de Malaca liga quais mares?", options: ["Mar da China e Índico", "Cáspio e Pérsico", "Mediterrâneo e Vermelho"], answer: 0 },
       { text: "Por que o Mar da China Meridional é disputado?", options: ["Geleiras", "Recursos naturais", "Água potável"], answer: 1 },
-      { text: "Qual mar banha o Japão?", options: ["Aral", "Java", "Japão"], answer: 2 }
+      { text: "Qual mar banha o Japão?", options: ["Aral", "Java", "Japão"], answer: 2 },
+      { text: "Onde há clima polar na Ásia?", options: ["Sibéria", "Índia", "Filipinas"], answer: 0 },
+      { text: "Onde predomina o clima desértico?", options: ["Arábia Saudita", "Nepal", "Coreia do Sul"], answer: 0 },
+      { text: "O clima tropical úmido ocorre em:", options: ["Rússia", "Indonésia", "Irã"], answer: 1 },
+      { text: "O clima equatorial é típico de:", options: ["Tailândia", "Cazaquistão", "Malásia"], answer: 2 },
+      { text: "Massas de ar úmidas vêm geralmente do:", options: ["Oceano", "Deserto", "Montanhas"], answer: 0 },
+      { text: "Massas de ar secas são comuns em:", options: ["Litorais", "Desertos", "Florestas"], answer: 1 },
+      { text: "Massas frias atuam principalmente no:", options: ["Norte da Ásia", "Sul da Ásia", "Sudeste Asiático"], answer: 0 },
+      { text: "Massas quentes vêm do:", options: ["Pólo Norte", "Equador", "Europa"], answer: 1 },
+      { text: "O Himalaia está localizado em qual região?", options: ["Sudeste", "Sul", "Norte"], answer: 1 },
+      { text: "As planícies do Ganges têm:", options: ["Alta altitude", "Baixa altitude", "Altitude média"], answer: 1 }
     ];
 
     let score = 0;
